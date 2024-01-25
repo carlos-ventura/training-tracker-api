@@ -9,6 +9,7 @@ class TrainingGame(str, Enum):
 class TrainingType(str, Enum):
     AirRoll = "air_roll"
     Flips = "flips"
+    Control = "control"
 
 
 class TrainingSubType(str, Enum):
@@ -21,3 +22,6 @@ class TrainingSubType(str, Enum):
     # Flips
     HalfFlip = "half_flip"
     SpeedFlip = "speed_flip"
+
+    # Control
+    GroundControl = "ground_control"
