@@ -23,6 +23,7 @@ class TrainingSubType(str, Enum):
     HalfFlip = "half_flip"
     SpeedFlip = "speed_flip"
     WallDash = "wall_dash"
+    ZapDash = "zap_dash"
 
     # Control
     GroundControl = "ground_control"
