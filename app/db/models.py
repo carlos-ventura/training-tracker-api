@@ -10,5 +10,5 @@ class TrainingModel(Base):
     game = Column(String, nullable=False)
     type = Column(String, nullable=False)
     sub_type = Column(String, nullable=False)
-    hours = Column(Float, nullable=False)
+    minutes = Column(Float, nullable=False)
     date = Column(Date, nullable=False)
