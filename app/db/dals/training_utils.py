@@ -16,12 +16,19 @@ def process_game_query(query: Query) -> dict:
             {
                 "type": row.type,
                 "sub_type": row.sub_type,
+                "time": _time(row.minutes),
                 "minutes": row.minutes,
                 "count": row.count
             }
         )
 
-    return {"game": game, "minutes": minutes, "count": count, "trainings": formatted_result}
+    return {
+        "game": game,
+        "time": _time(minutes),
+        "minutes": minutes,
+        "count": count,
+        "trainings": formatted_result
+    }
 
 
 def process_type_query(query: Query) -> dict:
@@ -38,10 +45,19 @@ def process_type_query(query: Query) -> dict:
         formatted_result.append(
             {
                 "type": row.type,
+                "time": _time(row.minutes),
                 "minutes": row.minutes,
                 "count": row.count
             }
         )
+    return {
+        "game": game,
+        "time": _time(minutes),
+        "minutes": minutes,
+        "count": count,
+        "trainings": formatted_result
+    }
+
 
 def _time(minutes: float) -> str:
     minutes = int(minutes)
