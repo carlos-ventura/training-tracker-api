@@ -9,5 +9,5 @@ class Training(BaseModel):
     game: TrainingGame = Field(examples=[TrainingGame.RocketLeague])
     type: TrainingType = Field(examples=[TrainingType.Flips])
     sub_type: TrainingSubType = Field(examples=[TrainingSubType.SpeedFlip])
-    hours: float
+    minutes: float
     date: date_datetime = date_datetime.today()
