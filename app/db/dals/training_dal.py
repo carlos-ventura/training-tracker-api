@@ -33,7 +33,7 @@ class TrainingDAL():
             TrainingModel.type,
             TrainingModel.sub_type,
             func.count().label("count"),
-            func.sum(TrainingModel.hours).label("hours")
+            func.sum(TrainingModel.minutes).label("minutes")
         ).group_by(
             TrainingModel.game,
             TrainingModel.type,
@@ -49,7 +49,7 @@ class TrainingDAL():
             TrainingModel.game,
             TrainingModel.type,
             func.count().label("count"),
-            func.sum(TrainingModel.hours).label("hours")
+            func.sum(TrainingModel.minutes).label("minutes")
         ).group_by(
             TrainingModel.game,
             TrainingModel.type,
