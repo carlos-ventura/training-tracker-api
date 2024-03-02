@@ -42,4 +42,8 @@ def process_type_query(query: Query) -> dict:
                 "count": row.count
             }
         )
-    return {"game": game, "minutes": minutes, "count": count, "trainings": formatted_result}
+
+def _time(minutes: float) -> str:
+    minutes = int(minutes)
+    hours, remaining_minutes = divmod(minutes, 60)
+    return f"{hours}h:{remaining_minutes}m"
