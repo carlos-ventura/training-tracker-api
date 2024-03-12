@@ -22,7 +22,6 @@
     "pylint.args": [
         "--max-line-length=120",
         "--disable=C0111, C0114, C0115, C0116",
-        "--generated-members=requests.* sqlalchemy.*"
     ],
     "flake8.args": [
         "--extend-select=TC,TC1",
