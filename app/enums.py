@@ -20,6 +20,7 @@ class TrainingSubType(str, Enum):
     Q3 = "q3"
     Q4 = "q4"
     Shot = "shot"
+    TornadoSping = "tornado_spin"
 
     # Flips
     HalfFlip = "half_flip"
