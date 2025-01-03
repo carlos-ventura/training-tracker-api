@@ -1,5 +1,5 @@
 DESCRIPTION = """
-Rocket League Training API
+Training API
 
 API to save and retrieve multiple trainig stats
 """
