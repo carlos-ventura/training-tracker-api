@@ -1,4 +1,7 @@
 from contextlib import asynccontextmanager
+from dotenv import load_dotenv
+
+import app.auth
 
 from fastapi import Depends, FastAPI
 from sqlalchemy.orm import Session
@@ -15,6 +18,7 @@ from app.tasks import (
     save_training_task,
 )
 
+load_dotenv()
 
 def get_db_session():
     db_session = session()
@@ -37,7 +41,8 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title="Training Tracker",
     description=DESCRIPTION,
-    lifespan=lifespan
+    lifespan=lifespan,
+    dependencies=[Depends(app.auth.validate_api_key)]
 )
 
 
