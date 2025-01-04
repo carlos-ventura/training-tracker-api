@@ -50,7 +50,8 @@ private_router = APIRouter(dependencies=[Depends(validate_api_key)])
 
 @public_router.post("/login", dependencies=[])
 async def login(api_key:str, response: Response):
-    api_key = os.getenv("API_KEY")
+    if api_key != os.getenv("API_KEY"):
+         raise HTTPException(status_code=401, detail="Unauthorized")
 
     response.set_cookie(
         key="api_key", 
