@@ -1,9 +1,10 @@
 from contextlib import asynccontextmanager
+from datetime import datetime, timedelta, timezone
+import os
 from dotenv import load_dotenv
 
-import app.auth
-
-from fastapi import Depends, FastAPI
+from app.auth import validate_api_key
+from fastapi import APIRouter, Depends, FastAPI, Response
 from sqlalchemy.orm import Session
 
 from app.constants import DESCRIPTION
@@ -41,31 +42,57 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title="Training Tracker",
     description=DESCRIPTION,
-    lifespan=lifespan,
-    dependencies=[Depends(app.auth.validate_api_key)]
+    lifespan=lifespan
 )
 
+public_router = APIRouter()
+private_router = APIRouter(dependencies=[Depends(validate_api_key)])
 
-@app.get("/trainings/")
+@public_router.post("/login", dependencies=[])
+async def login(api_key:str, response: Response):
+    api_key = os.getenv("API_KEY")
+
+    response.set_cookie(
+        key="api_key", 
+        value=api_key, 
+        httponly=True, 
+        expires=(datetime.now(tz=timezone.utc) + timedelta(days=30)),
+        secure=True,
+        samesite="Strict"
+    )
+    
+    return {"message": "Logged in successfully"}
+
+@private_router.post("/logout")
+async def logout(response: Response):
+    response.delete_cookie("api_key")
+    
+    return {"message": "Logged out successfully"}
+
+
+@private_router.get("/trainings/")
 def load_trainings(db_session: Session = Depends(get_db_session)):
     return load_all_training_task(db_session)
 
 
-@app.get("/trainings/game")
+@private_router.get("/trainings/game")
 def load_training_game(game: TrainingGame, db_session: Session = Depends(get_db_session)):
     return load_trainings_game_task(game, db_session)
 
 
-@app.get("/training/type")
+@private_router.get("/training/type")
 def load_training_type(training_type: TrainingType, db_session: Session = Depends(get_db_session)):
     return load_trainings_type_task(training_type, db_session)
 
 
-@app.post("/trainings/")
+@private_router.post("/trainings/")
 def save_training(training: Training, db_session: Session = Depends(get_db_session)):
     save_training_task(training, db_session)
 
 
-@app.delete("/trainings/{training_id}")
+@private_router.delete("/trainings/{training_id}")
 def delete_training(training_id: str, db_session: Session = Depends(get_db_session)):
     delete_training_task(training_id, db_session)
+
+app.include_router(public_router)
+app.include_router(private_router)
