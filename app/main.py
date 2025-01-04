@@ -2,9 +2,11 @@ from contextlib import asynccontextmanager
 from datetime import datetime, timedelta, timezone
 import os
 from dotenv import load_dotenv
+from fastapi.middleware.cors import CORSMiddleware
+
 
 from app.auth import validate_api_key
-from fastapi import APIRouter, Depends, FastAPI, Response
+from fastapi import APIRouter, Depends, FastAPI, HTTPException, Response
 from sqlalchemy.orm import Session
 
 from app.constants import DESCRIPTION
@@ -43,6 +45,14 @@ app = FastAPI(
     title="Training Tracker",
     description=DESCRIPTION,
     lifespan=lifespan
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 public_router = APIRouter()
